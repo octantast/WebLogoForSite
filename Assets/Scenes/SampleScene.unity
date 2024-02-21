@@ -137,7 +137,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2461413403866471516, guid: e8947d343562ffe40a397df6928b35f1, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2461413403866471516, guid: e8947d343562ffe40a397df6928b35f1, type: 3}
       propertyPath: m_LocalPosition.z
@@ -385,8 +385,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectToRotate: {fileID: 230193289}
-  rotationSpeed: 4
-  damping: 0.4
+  rotationSpeed: 8
+  damping: 0.6
+  sensitivity: 5
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

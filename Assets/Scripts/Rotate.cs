@@ -11,6 +11,18 @@ public class Rotate : MonoBehaviour
     private Vector3 lastMousePosition; // Последняя позиция мыши
     private Vector3 rotationDirection;
 
+    public float sensitivity = 5.0f;
+
+    // Переменные для хранения текущих координат мыши
+    private float mouseX;
+    private float mouseY;
+
+    // Переменная для хранения начальных координат мыши
+    private float initialX;
+    private float initialY;
+
+    private bool isRotating = false;
+
     void Update()
     {
         if (SystemInfo.deviceType == DeviceType.Handheld)
@@ -20,15 +32,26 @@ public class Rotate : MonoBehaviour
                 Touch touch = Input.GetTouch(0);
                 if (touch.phase == TouchPhase.Moved)
                 {
-                    Vector3 currentMousePosition = Input.mousePosition;
-                    Vector3 difference = currentMousePosition - lastMousePosition;
-                    rotationDirection = new Vector3(-difference.y, difference.x, 0f);
-                    objectToRotate.Rotate(rotationDirection * rotationSpeed * Time.deltaTime);
-                    lastMousePosition = currentMousePosition;
+                    mouseX = touch.position.x;
+                    mouseY = touch.position.y;
+
+                    float deltaX = mouseX - initialX;
+                    float deltaY = mouseY - initialY;
+
+                    float rotationX = deltaY * sensitivity * Time.deltaTime;
+                    float rotationY = -deltaX * sensitivity * Time.deltaTime;
+                    rotationDirection = new Vector3(rotationY, rotationX, 0f);
+
+                    objectToRotate.Rotate(Vector3.up, rotationY * rotationSpeed, Space.World);
+                    objectToRotate.Rotate(Vector3.right, rotationX * rotationSpeed, Space.World);
+
+                    initialX = mouseX;
+                    initialY = mouseY;
                 }
                 else
                 {
-                    objectToRotate.Rotate(rotationDirection * rotationSpeed * damping * Time.deltaTime);
+                    objectToRotate.Rotate(Vector3.up, rotationDirection.x * damping, Space.World);
+                    objectToRotate.Rotate(Vector3.right, rotationDirection.y * damping, Space.World);
                 }
             }
         }
@@ -36,17 +59,31 @@ public class Rotate : MonoBehaviour
         {
             if (Input.GetMouseButton(0))
             {
-                Vector3 currentMousePosition = Input.mousePosition;
-                Vector3 difference = currentMousePosition - lastMousePosition;
-                rotationDirection = new Vector3(-difference.y, difference.x, 0f);
-                objectToRotate.Rotate(rotationDirection * rotationSpeed * Time.deltaTime);
-                lastMousePosition = currentMousePosition;
+                mouseX = Input.mousePosition.x;
+                mouseY = Input.mousePosition.y;
+
+                float deltaX = mouseX - initialX;
+                float deltaY = mouseY - initialY;
+
+                float rotationX = deltaY * sensitivity * Time.deltaTime;
+                float rotationY = -deltaX * sensitivity * Time.deltaTime;
+                rotationDirection = new Vector3(rotationY, rotationX, 0f);
+
+                objectToRotate.Rotate(Vector3.up, rotationY * rotationSpeed, Space.World);
+                objectToRotate.Rotate(Vector3.right, rotationX * rotationSpeed, Space.World);
+
+                initialX = mouseX;
+                initialY = mouseY;
             }
             else
             {
-                objectToRotate.Rotate(rotationDirection * rotationSpeed * damping * Time.deltaTime);
+
+                objectToRotate.Rotate(Vector3.up, rotationDirection.x * damping, Space.World);
+                objectToRotate.Rotate(Vector3.right, rotationDirection.y * damping, Space.World);
             }
+
         }
+
     }
 
     void Start()
