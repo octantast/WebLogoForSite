@@ -51,6 +51,7 @@ public class Rotate : MonoBehaviour
 
     void Start()
     {
+        rotationDirection = new Vector3(1, 1, 0f);
         if (SystemInfo.deviceType == DeviceType.Handheld)
         {
             lastMousePosition = Input.GetTouch(0).position;
